@@ -75,4 +75,14 @@ public class UserInfoController {
         System.out.println("UserName:"+userName+"Password:"+password);
         this.authenticationManager.authenticate(authenticationToken);
     }
+
+
+
+    //Get User By UserID
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public UserInfo getUserByUserId(@PathVariable String id){
+        return userInfoService.getUserByUserId(id);
+    }
 }

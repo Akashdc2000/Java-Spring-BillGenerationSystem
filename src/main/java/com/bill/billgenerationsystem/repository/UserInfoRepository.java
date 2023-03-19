@@ -16,4 +16,6 @@ public interface UserInfoRepository extends MongoRepository<UserInfo,String> {
     Optional<List<UserInfo>> findAllByRoles(String roleAdmin);
 
     Optional<UserInfo> findByEmail(String email);
+
+    UserInfo findByUserIdAndRoles(String id,String role);
 }

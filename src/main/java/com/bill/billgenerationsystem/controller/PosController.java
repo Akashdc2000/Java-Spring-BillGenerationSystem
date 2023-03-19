@@ -47,4 +47,13 @@ public class PosController {
     public DailyPosRecords getAllOrdersByIdAndDate(@PathVariable("id")String id, @PathVariable("date") String date){
         return posService.getAllOrdersByPosIdAndDate(id,date);
     }
+
+
+    //Get Customer Info By Its ID
+
+    @GetMapping("/customer/{id}")
+    @PreAuthorize("hasRole('ROLE_POS')")
+    public UserInfo getCustomerById(@PathVariable String id){
+        return posService.getCustomerById(id);
+    }
 }

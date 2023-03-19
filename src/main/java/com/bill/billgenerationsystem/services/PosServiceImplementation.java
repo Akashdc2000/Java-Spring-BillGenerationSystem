@@ -8,6 +8,7 @@ import com.bill.billgenerationsystem.model.DailyPosRecords;
 import com.bill.billgenerationsystem.model.Items;
 import com.bill.billgenerationsystem.repository.OrdersRepository;
 import com.bill.billgenerationsystem.repository.PosRepository;
+import com.bill.billgenerationsystem.repository.UserInfoRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,12 +21,14 @@ public class PosServiceImplementation implements PosService{
 
     private final PosRepository posRepository;
     private final OrdersRepository ordersRepository;
+    private final UserInfoRepository userInfoRepository;
     private final OrdersService ordersService;
 
     private final UserInfoService userInfoService;
-    public PosServiceImplementation(PosRepository posRepository, OrdersRepository ordersRepository, OrdersService ordersService, UserInfoService userInfoService) {
+    public PosServiceImplementation(PosRepository posRepository, OrdersRepository ordersRepository, UserInfoRepository userInfoRepository, OrdersService ordersService, UserInfoService userInfoService) {
         this.posRepository = posRepository;
         this.ordersRepository = ordersRepository;
+        this.userInfoRepository = userInfoRepository;
         this.ordersService = ordersService;
         this.userInfoService = userInfoService;
     }
@@ -92,9 +95,10 @@ public class PosServiceImplementation implements PosService{
         return records;
     }
 
-
-
-
+    @Override
+    public UserInfo getCustomerById(String id) {
+        return userInfoRepository.findByUserIdAndRoles(id,"ROLE_CUSTOMER");
+    }
 
     ///Helper Functions....
     public String currentDate(){

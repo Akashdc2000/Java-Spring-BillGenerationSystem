@@ -67,4 +67,9 @@ public class UserInfoServiceImplementation implements UserInfoService{
         Optional<List<UserInfo>> userInfo=userInfoRepository.findAllByRoles("ROLE_POS");
         return  userInfo.orElse(null);
     }
+
+    @Override
+    public UserInfo getUserByUserId(String id) {
+        return userInfoRepository.findById(id).get();
+    }
 }

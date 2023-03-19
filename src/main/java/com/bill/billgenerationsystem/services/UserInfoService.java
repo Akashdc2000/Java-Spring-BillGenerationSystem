@@ -16,5 +16,7 @@ public interface UserInfoService {
 
     List<UserInfo> getAllPOS();
 
+    UserInfo getUserByUserId(String id);
+
 
 }
