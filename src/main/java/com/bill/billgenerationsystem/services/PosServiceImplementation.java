@@ -11,8 +11,11 @@ import com.bill.billgenerationsystem.repository.PosRepository;
 import com.bill.billgenerationsystem.repository.UserInfoRepository;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,7 +57,7 @@ public class PosServiceImplementation implements PosService{
         }else
             orders.setPosId(ordersService.getPOSIdByName(billRequest.getPosEmail()));
 
-        orders.setCreatedDate(currentDate());
+        orders.setCreatedDate(new Date());
         ordersRepository.save(orders);
 
 
@@ -64,7 +67,7 @@ public class PosServiceImplementation implements PosService{
         pos.setOrderedId(orders.getId());
         pos.setPosId(orders.getPosId());
         pos.setCustomerId(orders.getCustomerId());
-        pos.setCreatedDate(currentDate());
+        pos.setCreatedDate(new Date());
         posRepository.save(pos);
         return pos;
     }
@@ -78,9 +81,17 @@ public class PosServiceImplementation implements PosService{
     }
 
     @Override
-    public DailyPosRecords getAllOrdersByPosIdAndDate(String id, String date) {
+    public DailyPosRecords getAllOrdersByPosIdAndDate(String id, String dateString) throws ParseException {
 
-        Optional<List<Orders>> orders=ordersRepository.findAllByPosIdAndCreatedDate(id,date);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        Date startDate = (Date) formatter.parse(dateString);
+
+        Date endDate = (Date) formatter.parse(dateString);
+        endDate.setHours(23);
+        endDate.setMinutes(59);
+        endDate.setSeconds(59);
+
+        Optional<List<Orders>> orders=ordersRepository.findAllByPosIdAndCreatedDateBetween(id,startDate,endDate);
 
         DailyPosRecords records=new DailyPosRecords();
         records.setPosId(id);
@@ -101,11 +112,11 @@ public class PosServiceImplementation implements PosService{
     }
 
     ///Helper Functions....
-    public String currentDate(){
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        return LocalDate.now().format(formatter);
-    }
+//    public String currentDate(){
+//
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//        return LocalDate.now().format(formatter);
+//    }
 
 
     public float calculateTotalCost(List<Items> items){

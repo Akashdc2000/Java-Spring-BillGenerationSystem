@@ -8,6 +8,7 @@ import com.bill.billgenerationsystem.services.OrdersService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -33,24 +34,14 @@ public class OrdersController {
 
     @GetMapping("/date/{date}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_POS')")
-    public List<Orders> getAllOrdersByDate(@PathVariable("date") String date){
+    public List<Orders> getAllOrdersByDate(@PathVariable("date") String date) throws ParseException {
         return ordersService.getAllOrdersByDate(date);
     }
 
     @GetMapping("/earning/{date}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Earning getTotalEarning(@PathVariable("date") String date){
-        double total=0.0D;
-        List<Orders> ordersList=ordersService.getAllOrdersByDate(date);
-        for(Orders order: ordersList){
-            for (Items item:order.getItems()){
-                total+=item.getPrice();
-            }
-        }
-        Earning earning=new Earning();
-        earning.setDate(date);
-        earning.setTotalEarning(total);
-        return earning;
+    public Earning getTotalEarning(@PathVariable("date") String date) throws ParseException {
+        return ordersService.getTotalEarning(date);
     }
 
 

@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.bill.billgenerationsystem.entities.POS;
 
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -44,7 +45,7 @@ public class PosController {
 
     @GetMapping("/id/{id}/date/{date}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_POS')")
-    public DailyPosRecords getAllOrdersByIdAndDate(@PathVariable("id")String id, @PathVariable("date") String date){
+    public DailyPosRecords getAllOrdersByIdAndDate(@PathVariable("id")String id, @PathVariable("date") String date) throws ParseException {
         return posService.getAllOrdersByPosIdAndDate(id,date);
     }
 

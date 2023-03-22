@@ -2,10 +2,12 @@ package com.bill.billgenerationsystem.entities;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+
 @Document(collection = "billData")
 public class POS {
     private String id;
-    private String createdDate;
+    private Date createdDate;
     private String posId;
     private String orderedId;
     private String customerId;
@@ -52,11 +54,11 @@ public class POS {
         this.posId = posId;
     }
 
-    public String getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(String createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 }
